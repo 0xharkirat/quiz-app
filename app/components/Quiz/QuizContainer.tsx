@@ -6,6 +6,7 @@ import Question from "./Question";
 import Navigation from "./Navigation";
 
 import Score from "./Score";
+import CustomAlert from "./CustomAlert";
 
 export default function QuizContainer() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -13,6 +14,11 @@ export default function QuizContainer() {
     Array(questions.length).fill(null)
   );
   const [score, setScore] = useState(0);
+  const [showWarning, setShowWarning] = useState(true); // Show warning only once
+  const [consecutiveIncorrect, setConsecutiveIncorrect] = useState(0); // Track consecutive incorrect
+  const [showCustomAlert, setShowCustomAlert] = useState(false);
+
+
 
   const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // New state for quiz submission
 
@@ -23,7 +29,8 @@ export default function QuizContainer() {
     setCurrentQuestionIndex(0);
     setUserAnswers(Array(questions.length).fill(null));
     setScore(0);
-
+    setShowWarning(true); // Reset warning state
+    setConsecutiveIncorrect(0); // Reset consecutive incorrect
     setIsQuizSubmitted(false);
   };
 
@@ -35,10 +42,12 @@ export default function QuizContainer() {
     setUserAnswers(updatedAnswers);
 
     if (isCorrect) {
+      setConsecutiveIncorrect(0); // Reset consecutive incorrect count
       if (userAnswers[currentQuestionIndex] !== currentQuestion.correctAnswer) {
         setScore((prev) => prev + 1);
       }
     } else {
+      setConsecutiveIncorrect((prev) => prev + 1);
       if (userAnswers[currentQuestionIndex] === currentQuestion.correctAnswer) {
         setScore((prev) => prev - 1);
       }
@@ -46,6 +55,10 @@ export default function QuizContainer() {
   };
 
   const handleNavigation = (direction: "prev" | "next") => {
+    if (showWarning && consecutiveIncorrect >= 2) {
+      setShowCustomAlert(true);
+      setShowWarning(false); // Dismiss warning for the future
+    }
     if (direction === "next" && currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
     } else if (direction === "prev" && currentQuestionIndex > 0) {
@@ -54,7 +67,16 @@ export default function QuizContainer() {
   };
 
   const handleSubmit = () => {
+    if (showWarning && consecutiveIncorrect >= 2) {
+      alert('You have answered two questions incorrectly in a row. Please review the course material before continuing.');
+      setShowWarning(false); // Dismiss warning for the future
+      return; // Stop submission until user acknowledges
+    }
     setIsQuizSubmitted(true); // Mark the quiz as submitted
+  };
+
+  const closeAlert = () => {
+    setShowCustomAlert(false); // Close the alert
   };
 
   return (
@@ -78,6 +100,9 @@ export default function QuizContainer() {
               onNavigate={handleNavigation}
               onSubmit={handleSubmit} // Pass submit handler
             />
+
+            {/* Show Custom Alert */}
+        {showCustomAlert && <CustomAlert onClose={closeAlert} />}
           </>
         ) : (
           <Score
