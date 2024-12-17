@@ -16,7 +16,7 @@ interface OptionProps {
               ? "bg-inversePrimary text-white" // Selected State
               : "bg-white text-primary"         // Normal State
           }
-          hover:outline hover:outline-2 hover:outline-primary-container`}
+          hover:outline hover:outline-2 hover:outline-primary`}
       >
         {/* Circular Avatar */}
         <div

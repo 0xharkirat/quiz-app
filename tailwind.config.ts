@@ -30,9 +30,7 @@ export default {
         background: "#F9F9FF",
         onBackground: "#1A1B20",
         outline: "#75777F",
-        backgroundImage: {
-          'primary-gradient': "linear-gradient(to bottom, #15468F, #ADC6FF)",
-        },
+       
       },
     },
   },
