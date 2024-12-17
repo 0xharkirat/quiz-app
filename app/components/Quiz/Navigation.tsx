@@ -12,33 +12,42 @@ export default function Navigation({
   onNavigate,
 }: NavigationProps) {
   return (
-    <div className="flex justify-center gap-4 mt-6">
-      {/* Previous Button - Always Enabled (except for the first question) */}
-      {currentIndex > 0 && (
-        <button
-          onClick={() => onNavigate("prev")}
-          className="px-6 py-2 rounded-full bg-tertiary text-tertiary-onTertiary
-    hover:bg-tertiary-container hover:text-tertiary-onContainer transition duration-200"
-        >
-          Previous
-        </button>
-      )}
+    <div className="max-w-md mx-auto flex justify-between items-center mt-6 w-full">
+      {/* Fixed Width for Both Buttons */}
+      <div className="w-32">
+        {/* Previous Button */}
+        {currentIndex > 0 ? (
+          <button
+            onClick={() => onNavigate("prev")}
+            className="w-full px-6 py-2 rounded-full bg-tertiary-container text-tertiary-onContainer
+              hover:bg-tertiary hover:text-tertiary-onTertiary transition duration-200"
+          >
+            Previous
+          </button>
+        ) : (
+          <div className="invisible w-full px-6 py-2 rounded-full">Placeholder</div>
+        )}
+      </div>
 
-      {/* Next Button - Enabled only when the current question has a selected answer */}
-      {currentIndex < totalQuestions - 1 && (
-        <button
-          onClick={() => onNavigate("next")}
-          disabled={!userAnswer}
-          className={`px-6 py-2 rounded-full transition duration-200
-            ${
-              !userAnswer
-                ? "bg-gray-400 text-white cursor-not-allowed"
-                : "bg-primary-container text-primary hover:bg-primary hover:text-white"
-            }`}
-        >
-          Next
-        </button>
-      )}
+      <div className="w-32">
+        {/* Next Button */}
+        {currentIndex < totalQuestions - 1 ? (
+          <button
+            onClick={() => onNavigate("next")}
+            disabled={!userAnswer}
+            className={`w-full px-6 py-2 rounded-full transition duration-200
+              ${
+                !userAnswer
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-inversePrimary text-white hover:bg-primary hover:text-white"
+              }`}
+          >
+            Next
+          </button>
+        ) : (
+          <div className="invisible w-full px-6 py-2 rounded-full">Placeholder</div>
+        )}
+      </div>
     </div>
   );
 }

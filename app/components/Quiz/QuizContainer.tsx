@@ -51,7 +51,7 @@ export default function QuizContainer() {
   };
 
   return (
-    <div className="flex justify-center bg-[#F9F9FF] px-4 py-8">
+    <div className="flex min-h-screen justify-center bg- px-4 py-8 bg-gradient-first" >
       <div className='text-center w-full max-w-3xl'>
         <p className="text-primary text-lg font-semibold mb-4">
           Question {currentQuestionIndex + 1} / {questions.length}
