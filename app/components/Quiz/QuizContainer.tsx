@@ -5,7 +5,7 @@ import questions from '../../../data/questions.json';
 import Question from './Question';
 import Navigation from './Navigation';
 import ReviewMessage from './ReviewMessage';
-import ScoreBoard from './ScoreBoard';
+// import ScoreBoard from './ScoreBoard';
 
 export default function QuizContainer() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -51,20 +51,29 @@ export default function QuizContainer() {
   };
 
   return (
-    <div>
-      <Question
-        question={currentQuestion}
-        userAnswer={userAnswers[currentQuestionIndex]}
-        onAnswer={handleAnswer}
-      />
-      {reviewMessage && <ReviewMessage />}
-      <Navigation
-        currentIndex={currentQuestionIndex}
-        totalQuestions={questions.length}
-        userAnswer={userAnswers[currentQuestionIndex]}
-        onNavigate={handleNavigation}
-      />
-      <ScoreBoard currentIndex={currentQuestionIndex} totalQuestions={questions.length} score={score} />
+    <div className="flex justify-center bg-[#F9F9FF] px-4 py-8">
+      <div className='text-center w-full max-w-3xl'>
+        <p className="text-primary text-lg font-semibold mb-4">
+          Question {currentQuestionIndex + 1} / {questions.length}
+        </p >
+        <Question
+          question={currentQuestion}
+          userAnswer={userAnswers[currentQuestionIndex]}
+          onAnswer={handleAnswer}
+        />
+        {reviewMessage && <ReviewMessage />}
+        <Navigation
+          currentIndex={currentQuestionIndex}
+          totalQuestions={questions.length}
+          userAnswer={userAnswers[currentQuestionIndex]}
+          onNavigate={handleNavigation}
+        />
+        {/* <ScoreBoard
+          currentIndex={currentQuestionIndex}
+          totalQuestions={questions.length}
+          score={score}
+        /> */}
+    </div>
     </div>
   );
 }
