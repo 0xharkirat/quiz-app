@@ -1,20 +1,31 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import questions from '../../../data/questions.json';
-import Question from './Question';
-import Navigation from './Navigation';
-import ReviewMessage from './ReviewMessage';
-// import ScoreBoard from './ScoreBoard';
+import { useState } from "react";
+import questions from "../../../data/questions.json";
+import Question from "./Question";
+import Navigation from "./Navigation";
+
+import Score from "./Score";
 
 export default function QuizContainer() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
-  const [userAnswers, setUserAnswers] = useState<string[]>(Array(questions.length).fill(null));
+  const [userAnswers, setUserAnswers] = useState<string[]>(
+    Array(questions.length).fill(null)
+  );
   const [score, setScore] = useState(0);
-  const [consecutiveIncorrect, setConsecutiveIncorrect] = useState(0);
-  const [reviewMessage, setReviewMessage] = useState(false);
+
+  const [isQuizSubmitted, setIsQuizSubmitted] = useState(false); // New state for quiz submission
 
   const currentQuestion = questions[currentQuestionIndex];
+
+  // Function to reset the quiz
+  const handleRetakeQuiz = () => {
+    setCurrentQuestionIndex(0);
+    setUserAnswers(Array(questions.length).fill(null));
+    setScore(0);
+
+    setIsQuizSubmitted(false);
+  };
 
   const handleAnswer = (answer: string) => {
     const isCorrect = answer === currentQuestion.correctAnswer;
@@ -24,56 +35,60 @@ export default function QuizContainer() {
     setUserAnswers(updatedAnswers);
 
     if (isCorrect) {
-      setConsecutiveIncorrect(0);
-      setReviewMessage(false);
       if (userAnswers[currentQuestionIndex] !== currentQuestion.correctAnswer) {
         setScore((prev) => prev + 1);
       }
     } else {
-      setConsecutiveIncorrect((prev) => prev + 1);
-      if (consecutiveIncorrect + 1 >= 2) setReviewMessage(true);
       if (userAnswers[currentQuestionIndex] === currentQuestion.correctAnswer) {
         setScore((prev) => prev - 1);
       }
     }
   };
 
-  const handleNavigation = (direction: 'prev' | 'next') => {
-    if (reviewMessage) {
-      alert('Please review the course before continuing.');
-      return;
-    }
-    if (direction === 'next' && currentQuestionIndex < questions.length - 1) {
+  const handleNavigation = (direction: "prev" | "next") => {
+    if (direction === "next" && currentQuestionIndex < questions.length - 1) {
       setCurrentQuestionIndex((prev) => prev + 1);
-    } else if (direction === 'prev' && currentQuestionIndex > 0) {
+    } else if (direction === "prev" && currentQuestionIndex > 0) {
       setCurrentQuestionIndex((prev) => prev - 1);
     }
   };
 
+  const handleSubmit = () => {
+    setIsQuizSubmitted(true); // Mark the quiz as submitted
+  };
+
   return (
-    <div className="flex min-h-screen justify-center bg- px-4 py-8 bg-gradient-first" >
-      <div className='text-center w-full max-w-3xl'>
-        <p className="text-primary text-lg font-semibold mb-4">
-          Question {currentQuestionIndex + 1} / {questions.length}
-        </p >
-        <Question
-          question={currentQuestion}
-          userAnswer={userAnswers[currentQuestionIndex]}
-          onAnswer={handleAnswer}
-        />
-        {reviewMessage && <ReviewMessage />}
-        <Navigation
-          currentIndex={currentQuestionIndex}
-          totalQuestions={questions.length}
-          userAnswer={userAnswers[currentQuestionIndex]}
-          onNavigate={handleNavigation}
-        />
-        {/* <ScoreBoard
-          currentIndex={currentQuestionIndex}
-          totalQuestions={questions.length}
-          score={score}
-        /> */}
-    </div>
+    <div className="flex min-h-screen justify-center items-center bg-gradient-first px-4 py-8">
+      <div className="text-center w-full max-w-3xl">
+        {!isQuizSubmitted ? (
+          <>
+            <p className="text-primary text-lg font-semibold mb-4">
+              Question {currentQuestionIndex + 1} / {questions.length}
+            </p>
+            <Question
+              question={currentQuestion}
+              userAnswer={userAnswers[currentQuestionIndex]}
+              onAnswer={handleAnswer}
+            />
+
+            <Navigation
+              currentIndex={currentQuestionIndex}
+              totalQuestions={questions.length}
+              userAnswer={userAnswers[currentQuestionIndex]}
+              onNavigate={handleNavigation}
+              onSubmit={handleSubmit} // Pass submit handler
+            />
+          </>
+        ) : (
+          <Score
+            score={score}
+            totalQuestions={questions.length}
+            onClick={handleRetakeQuiz}
+            userAnswers={userAnswers}
+            questions={questions}
+          />
+        )}
+      </div>
     </div>
   );
 }

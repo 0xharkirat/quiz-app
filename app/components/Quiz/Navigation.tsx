@@ -3,6 +3,7 @@ interface NavigationProps {
   totalQuestions: number;
   userAnswer: string | null;
   onNavigate: (direction: "prev" | "next") => void;
+  onSubmit: () => void; // Add Submit handler
 }
 
 export default function Navigation({
@@ -10,6 +11,7 @@ export default function Navigation({
   totalQuestions,
   userAnswer,
   onNavigate,
+  onSubmit,
 }: NavigationProps) {
   return (
     <div className="max-w-md mx-auto flex justify-between items-center mt-6 w-full">
@@ -30,8 +32,21 @@ export default function Navigation({
       </div>
 
       <div className="w-32">
-        {/* Next Button */}
-        {currentIndex < totalQuestions - 1 ? (
+        {/* Submit Button on Last Question */}
+        {currentIndex === totalQuestions - 1 ? (
+          <button
+            onClick={onSubmit}
+            disabled={!userAnswer}
+            className={`w-full px-6 py-2 rounded-full transition duration-200
+              ${
+                !userAnswer
+                  ? "bg-gray-400 text-white cursor-not-allowed"
+                  : "bg-primary text-white hover:bg-inversePrimary hover:text-primary"
+              }`}
+          >
+            Submit
+          </button>
+        ) : (
           <button
             onClick={() => onNavigate("next")}
             disabled={!userAnswer}
@@ -39,13 +54,11 @@ export default function Navigation({
               ${
                 !userAnswer
                   ? "bg-gray-400 text-white cursor-not-allowed"
-                  : "bg-inversePrimary text-white hover:bg-primary hover:text-white"
+                  : "bg-primary text-white hover:bg-inversePrimary hover:text-primary"
               }`}
           >
             Next
           </button>
-        ) : (
-          <div className="invisible w-full px-6 py-2 rounded-full">Placeholder</div>
         )}
       </div>
     </div>
