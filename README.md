@@ -3,8 +3,13 @@
 
 This is a simple Quiz Application MVP created as part of a job application. The project showcases React (Next.Js) and TypeScript development with a clean, modern UI, focusing on modular design and functionality.
 
+Note - A runtime error can occur due to installed extensions on your browser like this due to `Turbopack` but you can ignore this error because it does not affects app functionality:
+<img src="https://raw.githubusercontent.com/0xharkirat/quiz-app/refs/heads/master/readme-assets/screenshots/error.png" alt="Extensions error image" width="700">
 
-# Task Progress
+
+
+
+# Task Progress 100%
 ### User Requirements
 - ✅ Questions can be either multiple choice (single answer only) or true/false.
 - ✅ The quiz will have a total of between 3 and 10 questions.
