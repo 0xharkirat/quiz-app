@@ -3,7 +3,9 @@
 
 This is a simple Quiz Application MVP created as part of a job application. The project showcases React (Next.Js) and TypeScript development with a clean, modern UI, focusing on modular design and functionality.
 
-Note - A runtime error can occur due to installed extensions on your browser like this due to `Turbopack` but you can ignore this error because it does not affects app functionality:
+I have also created the Flutter version for the same [check here](https://github.com/0xharkirat/quiz_app_flutter)
+
+Note - A runtime error can occur due to installed extensions on your browser like this due to `Turbopack` but you can ignore this error because it does not affect app functionality:
 <img src="https://raw.githubusercontent.com/0xharkirat/quiz-app/refs/heads/master/readme-assets/screenshots/error.png" alt="Extensions error image" width="700">
 
 
